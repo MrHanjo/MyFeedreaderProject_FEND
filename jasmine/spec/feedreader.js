@@ -88,16 +88,15 @@ $(function() {
 
     //This suite that ensures when a new feed is loaded by the loadFeed function that the content actually changes.
     describe('New Feed Selection', ()=> {
-	    let feedOne, 
-			feedTwo;
-		
+	    let feedOne, feedTwo;
+
 		//Runs each loadFeed asynchronously
 		beforeEach((done)=> {
-			
+
 			loadFeed(0, ()=> {
 				feedOne = $('.feed').innerText;
 				console.log('First feed loaded successfully.');
-					
+
 				loadFeed(1, ()=> {
 					feedTwo = $('.feed').innerText();
 					console.log('Second feed loaded successfully.');
@@ -105,7 +104,7 @@ $(function() {
 				});
 			});
 		});
-		
+
 		
         //Tests to see if two feeds are NOT equal
 		it('checks if two feeds are different', (done)=> {
