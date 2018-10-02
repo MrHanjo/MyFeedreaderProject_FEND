@@ -7,19 +7,19 @@ $(function() {
     /*  This is our first test suite - a test suite just contains a related set of tests.
         This suite is all about the RSS feeds definitions, the allFeeds variable in our application. */
 
-    describe('RSS Feeds', function() {
+    describe('RSS Feeds', ()=> {
         /* This is our first test - it tests to make sure that the
          * allFeeds variable has been defined and that it is not empty.
          * Experiment with this before you get started on the rest of this project.
          * What happens when you change allFeeds in app.js to be an empty array and refresh the page? Everything fails */
-        it('allFeeds variable is defined and not empty', function() {
+        it('allFeeds variable is defined and not empty', ()=> {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
 
         /* Test that loops through each feed in the allFeeds object and 
            ensures it has a URL defined and that the URL is not empty. */
-        it('URLs in allFeeds are defined and not empty', function() {
+        it('URLs in allFeeds are defined and not empty', ()=> {
             for (x=0; x < allFeeds.length; x++) {
                 expect(allFeeds[x].url).toBeDefined();
                 expect(allFeeds[x].url.length).not.toBe(0);
@@ -29,7 +29,7 @@ $(function() {
 
         /* Test that loops through each feed in the allFeeds object and 
            ensures it has a name defined and that the name is not empty.*/
-        it('names in allFeeds are defined and not empty', function() {
+        it('names in allFeeds are defined and not empty', ()=> {
          	for (let feed of allFeeds) {
          		expect(feed.name).toBeDefined();
          		expect(feed.name.length).not.toBe(0);
@@ -46,15 +46,15 @@ $(function() {
 
 
     //This suite tests the functionality of the pop out menu
-    describe ('The menu', function () {
+    describe ('The menu', ()=> {
  
         //Test that ensures the menu element is hidden by default.
-        it ('menu hidden by default', function() {
+        it ('menu hidden by default', ()=> {
             expect ($('body').hasClass('menu-hidden')).toBe(true)
         });
 
         //Test that ensures the menu changes visibility when the menu icon is clicked.
-        it ('unhide and hide menu on click', function() {
+        it ('unhide and hide menu on click', ()=> {
             $('.menu-icon-link').trigger('click')
                 expect($('body').hasClass('menu-hidden')).toBe(false)       //on the first click
             $('.menu-icon-link').trigger('click')
@@ -64,20 +64,20 @@ $(function() {
 
 
     //This suite tests the presense of the "Initial Entries"
-    describe ('Initial Entries', function() {
+    describe ('Initial Entries', ()=> {
 
         /*  Test that ensures when the loadFeed function is called and completes its work, 
             there is at least a single .entry element within the .feed container.
             Remember, loadFeed() is asynchronous so this test will require
             the use of Jasmine's beforeEach and asynchronous done() function.
             Look at app.js to see the loadFeed. */
-        beforeEach(function(done) {
-            loadFeed(0, function() {
+        beforeEach((done)=> {
+            loadFeed(0, ()=> {
                 done();
             });
         });
 
-        it ('loadFeed has at least a single entry', function() {
+        it ('loadFeed has at least a single entry', ()=> {
             $('.menu-icon-link').trigger('click')
                 expect ($('.feed .entry').length).toBeGreaterThan(0);
                 expect ($('.feed .entry')).toBeDefined();
@@ -87,31 +87,28 @@ $(function() {
 
 
     //This suite that ensures when a new feed is loaded by the loadFeed function that the content actually changes.
-    describe('New Feed Selection', function() {
-	    var feedOne, feedTwo;
-
-        //Ensures that the new feed is loaded via the loadFeed function
-		beforeEach(function(done) {
-            loadFeed(0, function() {
-                //Tests if first feed is loaded
-                console.log('First feed loaded successfully.')
-                feedOne = $('.feed').html();
-                    done();
-            });
-        });
-
-        //Ensures that the new feed is loaded via the loadFeed function
-        afterEach(function(done) {
-            loadFeed(1, function() {
-                //Tests if second feed is loaded
-                console.log('Second feed loaded successfully.')
-                feedTwo = $('.feed').html();
-                done();
-            });
-        });
-
+    describe('New Feed Selection', ()=> {
+	    let feedOne, 
+			feedTwo;
+		
+		//Runs each loadFeed asynchronously
+		beforeEach((done)=> {
+			
+			loadFeed(0, ()=> {
+				feedOne = $('.feed').innerText;
+				console.log('First feed loaded successfully.');
+					
+				loadFeed(1, ()=> {
+					feedTwo = $('.feed').innerText();
+					console.log('Second feed loaded successfully.');
+						done() ;
+				});
+			});
+		});
+		
+		
         //Tests to see if two feeds are NOT equal
-		it('checks if two feeds are different', function(done) {
+		it('checks if two feeds are different', (done)=> {
             expect(feedOne).not.toEqual(feedTwo);
             done();
         });
